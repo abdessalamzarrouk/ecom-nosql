@@ -10,26 +10,20 @@ pipeline {
                 git branch: 'main', url: 'https://github.com/abdessalamzarrouk/ecom-nosql.git'
             }
         }
-        stage('data base insert ') {
-          steps {
-            sh 'rm kubernetes/configmap.yaml \
-                kubernetes/deployments.yaml \
-                kubernetes/ingress.yaml \
-                kubernetes/pvc.yaml \
-                kubernetes/secrets.yaml \
-                kubernetes/README.md \
-                kubernetes/services.yaml'
-          }
-        }
         stage('Test Docker Access') {
           steps {
             sh 'docker ps'
           }
         }
+        stage('Test Docker Access') {
+          steps {
+            sh 'docker compose up --build -d' 
+          }
+        }
         
-        stage('Deploy to Kubernetes') {
+        stage('Deployement stage') {
             steps {
-                sh 'kubectl apply -f kubernetes/ --validate=false'
+                sh 'echo "Microservices deployed succesfully"'
             }
         }
     }
