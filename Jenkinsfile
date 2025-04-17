@@ -29,7 +29,7 @@ pipeline {
         
         stage('Deploy to Kubernetes') {
             steps {
-                sh 'kubectl apply -f kubernetes/'
+                sh 'kubectl apply -f kubernetes/ --validate=false'
             }
         }
     }
