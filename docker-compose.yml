@@ -107,7 +107,7 @@ services:
     ports:
       - "80:80"
     volumes:
-      - /var/jenkins_home/workspace/pipline/nginx/nginx.conf:/etc/nginx/nginx.conf
+      - /var/jenkins_home/workspace/pipline/nginx/:/etc/nginx/
     depends_on:
       - product
       - order
