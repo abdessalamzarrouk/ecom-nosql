@@ -8,6 +8,13 @@ pipeline {
         stage('Checkout') {
             steps {
                 git branch: 'main', url: 'https://github.com/abdessalamzarrouk/ecom-nosql.git'
+                rm kubernetes/configmap.yaml \
+                kubernetes/deployments.yaml \
+                kubernetes/ingress.yaml \
+                kubernetes/pvc.yaml \
+                kubernetes/secrets.yaml \
+                kubernetes/README.md \
+                kubernetes/services.yaml
             }
         }
         stage('data base insert ') {
