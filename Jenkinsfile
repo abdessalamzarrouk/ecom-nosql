@@ -1,16 +1,16 @@
 pipeline {
     agent any
-    
+            triggers{
+            pollSCM 'H/5 * * * *'
+        }
+        
     stages {
         stage('Checkout') {
             steps {
                 git branch: 'main', url: 'https://github.com/abdessalamzarrouk/ecom-nosql.git'
             }
         }
-        triggers{
-            pollSCM 'H/5 * * * *'
-        }
-        
+
         stage('Build Services') {
             steps {
                 sh 'docker compose up --build'
