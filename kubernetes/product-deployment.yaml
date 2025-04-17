@@ -1,0 +1,34 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: e-commerce-product
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: e-commerce-product
+  template:
+    metadata:
+      labels:
+        app: e-commerce-product
+    spec:
+      containers:
+      - name: product
+        build:
+          context: ./product
+        ports:
+        - containerPort: 8080
+        env:
+        - name: NODE_ENV
+          value: "production"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: e-commerce-product
+spec:
+  ports:
+    - port: 8080
+  selector:
+    app: e-commerce-product
+

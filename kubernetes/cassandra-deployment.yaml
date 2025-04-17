@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: e-commerce-cassandra
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: e-commerce-cassandra
+  template:
+    metadata:
+      labels:
+        app: e-commerce-cassandra
+    spec:
+      containers:
+      - name: cassandra
+        image: cassandra:latest
+        env:
+        - name: CASSANDRA_CLUSTER_NAME
+          value: "e-commerce_cluster"
+        - name: CASSANDRA_DC
+          value: "dc1"
+        - name: CASSANDRA_RACK
+          value: "rack1"
+        ports:
+        - containerPort: 9042
+        volumeMounts:
+        - name: cassandra-data
+          mountPath: /var/lib/cassandra
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: e-commerce-cassandra
+spec:
+  ports:
+    - port: 9042
+  selector:
+    app: e-commerce-cassandra
+
