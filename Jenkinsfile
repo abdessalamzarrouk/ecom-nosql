@@ -20,11 +20,11 @@ pipeline {
             sh 'docker ps'
           }
         }
-        // stage('Build Services') {
-        //     steps {
-        //         sh 'docker compose up --build'
-        //     }
-        // }
+        stage('Build Services') {
+            steps {
+                sh 'docker compose up --build -d'
+            }
+        }
         
         stage('Deploy to Kubernetes') {
             steps {
