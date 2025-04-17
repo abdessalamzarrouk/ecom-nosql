@@ -15,7 +15,7 @@ pipeline {
             sh 'docker ps'
           }
         }
-        stage('Test Docker Access') {
+        stage('Docker Build') {
           steps {
             sh 'docker compose up --build -d' 
           }
