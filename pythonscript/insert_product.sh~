@@ -1,0 +1,65 @@
+#!/bin/bash
+
+# Nom du conteneur Cassandra
+CASSANDRA_CONTAINER="e-commerce_cassandra"
+
+# Création du keyspace et de la table si ce n'est pas encore fait
+docker exec -i $CASSANDRA_CONTAINER cqlsh -e "
+CREATE KEYSPACE IF NOT EXISTS ecommerce WITH replication = {'class': 'SimpleStrategy', 'replication_factor': 1};
+USE ecommerce;
+CREATE TABLE IF NOT EXISTS products (
+    id UUID PRIMARY KEY,
+    availability_status text,
+    brand text,
+    category text,
+    color text,
+    created_at timestamp,
+    description text,
+    dimensions text,
+    discount float,
+    image_url text,
+    last_updated timestamp,
+    manufacturer text,
+    material text,
+    name text,
+    origin_country text,
+    price float,
+    product_code text,
+    ratings int,
+    release_date date,
+    reviews_count int,
+    stock_quantity int,
+    supplier text,
+    updated_at timestamp,
+    warranty_period int,
+    weight float
+);
+"
+
+# Fonction pour générer un produit et l'insérer via cqlsh
+insert_product() {
+  ID=$(uuidgen)
+  DATE=$(date +%Y-%m-%dT%H:%M:%S)
+  RELEASE_DATE=$(date +%Y-%m-%d)
+  docker exec -i $CASSANDRA_CONTAINER cqlsh -e "
+  USE ecommerce;
+  INSERT INTO products (
+    id, availability_status, brand, category, color, created_at, description, dimensions, discount,
+    image_url, last_updated, manufacturer, material, name, origin_country, price, product_code, ratings,
+    release_date, reviews_count, stock_quantity, supplier, updated_at, warranty_period, weight
+  ) VALUES (
+    $ID, 'Available', 'BrandX', 'Electronics', 'Black', '$DATE', 'Sample description', '10x10x10 cm', 10.0,
+    'http://example.com/$ID.jpg', '$DATE', 'BrandX Inc.', 'Plastic', 'Product-$ID', 'USA', 99.99, 'PC-$ID', 4,
+    '$RELEASE_DATE', 100, 20, 'SupplierX', '$DATE', 12, 1.5
+  );
+  "
+}
+
+# Insérer 10 produits (tu peux changer la valeur ici)
+for i in {1..10}; do
+  echo "Insertion du produit $i..."
+  insert_product
+done
+
+echo "✅ Insertion terminée !"
+
