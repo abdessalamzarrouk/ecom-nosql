@@ -106,8 +106,6 @@ services:
     container_name: e-commerce_nginx
     ports:
       - "80:80"
-    volumes:
-      - /var/jenkins_home/workspace/pipline/nginx/:/etc/nginx/
     depends_on:
       - product
       - order
