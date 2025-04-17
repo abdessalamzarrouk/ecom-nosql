@@ -10,6 +10,11 @@ pipeline {
                 git branch: 'main', url: 'https://github.com/abdessalamzarrouk/ecom-nosql.git'
             }
         }
+        stage('data base insert ') {
+          steps {
+            sh './pythonscript/insert_product.sh'
+          }
+        }
         stage('Test Docker Access') {
           steps {
             sh 'docker ps'
